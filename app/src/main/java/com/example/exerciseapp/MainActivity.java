@@ -11,12 +11,19 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listView;
+
+    // variable and class declarations
+    CalendarView calendarView;
+    static ListView listView;
+    static ArrayList<String> arrayList;
+    static ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,25 +32,27 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // start a new workout
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                // start WorkoutActivity on click
                 Intent intent = new Intent(getApplicationContext(), WorkoutActivity.class);
                 startActivity(intent);
 
             }
         });
 
-        listView = (ListView) findViewById(R.id.exerciseListView);
+        // listview of exercises
+        listView = findViewById(R.id.exerciseListView);
 
-        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList = new ArrayList<>();
         arrayList.add("1");
         arrayList.add("2");
         arrayList.add("3");
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
-
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
 
         listView.setAdapter(arrayAdapter);
 

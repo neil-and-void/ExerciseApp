@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="splits">
+        <item>leg day</item>
+        <item>chest day</item>
+        <item>back day</item>
+        <item>shoulder day</item>
+        <item>arm day</item>
+    </array>
+</resources>
