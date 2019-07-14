@@ -2,6 +2,7 @@ package com.example.exerciseapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +22,8 @@ import java.util.List;
 
 public class WorkoutActivity extends AppCompatActivity {
 
+    String mWorkoutName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class WorkoutActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 //TODO: add workout to DB
-                Log.i("workout", "start");
+                Log.i("workout", "start " + mWorkoutName);
 
             }
         });
@@ -53,12 +56,13 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
 
-        String[] listItems = new String[] {"1", "2", "3"};
+        final String[] workouts = getResources().getStringArray(R.array.splits);
 
-        builder.setSingleChoiceItems(R.array.splits, -1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(workouts, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("messgae","daf");
+                Log.i("message", workouts[which]);
+                 mWorkoutName = workouts[which];
 
             }
         });

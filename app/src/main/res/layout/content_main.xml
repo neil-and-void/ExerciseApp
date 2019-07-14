@@ -19,5 +19,15 @@
         android:id="@+id/exerciseListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/calendarView2" />
+        android:layout_below="@id/workoutTitleTextView"/>
+
+    <TextView
+        android:id="@+id/workoutTitleTextView"
+        android:layout_width="131dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/calendarView2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="-1dp"
+        android:text="All Workouts"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 </RelativeLayout>

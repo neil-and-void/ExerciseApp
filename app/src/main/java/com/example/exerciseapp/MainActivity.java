@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
@@ -21,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
 
     // variable and class declarations
     CalendarView calendarView;
-    static ListView listView;
-    static ArrayList<String> arrayList;
-    static ArrayAdapter<String> arrayAdapter;
+    ListView listView;
+    ArrayList<String> arrayList;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("1");
         arrayList.add("2");
         arrayList.add("3");
+        arrayList.add("4");
+        arrayList.add("5");
+        arrayList.add("6");
+        arrayList.add("New Workout");
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
 
         listView.setAdapter(arrayAdapter);
