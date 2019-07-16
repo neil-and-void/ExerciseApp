@@ -23,6 +23,7 @@ import java.util.List;
 public class WorkoutActivity extends AppCompatActivity {
 
     String mWorkoutName;
+    String[] mWorkouts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +57,13 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
 
-        final String[] workouts = getResources().getStringArray(R.array.splits);
+        mWorkouts = getResources().getStringArray(R.array.splits);
 
-        builder.setSingleChoiceItems(workouts, -1, new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(mWorkouts, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("message", workouts[which]);
-                 mWorkoutName = workouts[which];
+                Log.i("message", mWorkouts[which]);
+                 mWorkoutName = mWorkouts[which];
 
             }
         });
