@@ -1,22 +1,19 @@
 package com.example.exerciseapp;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,12 +30,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // start a new workout
+        // set floating action point button to start new workout
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 // start WorkoutActivity on click
                 Intent intent = new Intent(getApplicationContext(), WorkoutActivity.class);
                 startActivity(intent);
@@ -46,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // listview of exercises
-        listView = findViewById(R.id.exerciseListView);
+        // Initialize ListView of exercises
+        listView = findViewById(R.id.allWorkoutsListView);
 
+        // dummy data
         arrayList = new ArrayList<>();
         arrayList.add("1");
         arrayList.add("2");
@@ -57,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add("5");
         arrayList.add("6");
         arrayList.add("New Workout");
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
 
+        // Apply ArrayList to ArrayAdapter
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(arrayAdapter);
 
     }
@@ -78,10 +76,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_newExercise) {
+            Intent intent = new Intent(this, WorkoutListActivity.class);
+            startActivity(intent);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }
