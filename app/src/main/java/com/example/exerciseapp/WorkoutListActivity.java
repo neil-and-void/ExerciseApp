@@ -22,12 +22,7 @@ import java.util.ArrayList;
 public class WorkoutListActivity extends AppCompatActivity {
 
     private ArrayList<String> mWorkouts = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
-    ListView workoutListView;
-
-    private ArrayList<String> tempWorkoutArray = new ArrayList<>();
     SQLiteDatabase presetWorkoutsDB;
-
     private WorkoutRecyclerAdapter mWorkoutAdapter;
 
 
@@ -159,7 +154,6 @@ public class WorkoutListActivity extends AppCompatActivity {
                     //todo: read previously set workouts from database into workouts ArrayList
                     Log.i("databaseStrings", Integer.toString(cursor.getInt(presetWorkoutIDIndex)) + " " + cursor.getString(presetWorkoutNameIndex));
                     mWorkouts.add(cursor.getString(presetWorkoutNameIndex));
-
 
                 } while (cursor.moveToNext());
             }

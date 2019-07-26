@@ -2,6 +2,8 @@ package com.example.exerciseapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +15,14 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class WorkoutActivity extends AppCompatActivity {
 
     String mWorkoutName;
-    String[] mWorkouts;
     private ExerciseDataAdapter mAdapter;
+    SQLiteDatabase presetWorkoutsDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,6 @@ public class WorkoutActivity extends AppCompatActivity {
         setupAlertDialog();
 
         setExerciseDataAdapter();
-
         setupRecyclerView();
 
         // add exercise to workout
@@ -49,11 +52,9 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
 
-        // prompt user to choose workout day
-
     }
 
-    public void setupAlertDialog(){
+    private void setupAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
 
         // add workout
@@ -78,14 +79,12 @@ public class WorkoutActivity extends AppCompatActivity {
             }
         });
 
-        mWorkouts = getResources().getStringArray(R.array.splits);
-
-        builder.setSingleChoiceItems(mWorkouts, -1, new DialogInterface.OnClickListener() {
+        // read preset workouts from database
+        final List<String> items = queryWorkouts();
+        builder.setSingleChoiceItems(items.toArray(new String[items.size()]), -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("message", mWorkouts[which]);
-                mWorkoutName = mWorkouts[which];
-
+                // get the set of exercises for the selected workout from the database
             }
         });
 
@@ -114,7 +113,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
         //todo: read from SQLite DB
         mAdapter = new ExerciseDataAdapter(exercises);
-        Log.i("asdjlk;f","ADAPTER QWORKD");
 
     }
 
@@ -132,4 +130,38 @@ public class WorkoutActivity extends AppCompatActivity {
 
     }
 
+    private List<String> queryWorkouts(){
+        try{
+            // List to be returned
+            List<String> workoutList = new ArrayList<>();
+
+            // open database to work with
+            presetWorkoutsDB = this.openOrCreateDatabase("Workouts", MODE_PRIVATE, null);
+
+            // query for preset_workout_names
+            Cursor c = presetWorkoutsDB.rawQuery("SELECT preset_workout_name FROM preset_workouts", null);
+            int presetWorkoutNameIndex = c.getColumnIndex("preset_workout_name");
+            c.moveToFirst();
+
+            // check if there is data returned in query
+            if (c.getCount() > 0 && c != null) {
+                do {
+                    // add to workout
+                    workoutList.add(c.getString(presetWorkoutNameIndex));
+
+                } while (c.moveToNext());
+
+                return workoutList;
+
+            } else {
+                // todo: handle null returned from query
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
 }
