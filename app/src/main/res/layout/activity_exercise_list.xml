@@ -5,20 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RoutineListActivity">
+    tools:context=".PresetExerciseListActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/workoutListRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="468dp">
-
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/addWorkoutButton"
+        android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add Workout"
-        android:onClick="addRoutine"/>
-
+        android:text="Button" />
 </LinearLayout>

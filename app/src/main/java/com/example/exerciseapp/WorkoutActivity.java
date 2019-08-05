@@ -22,7 +22,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
     String mWorkoutName;
     private ExerciseDataAdapter mAdapter;
-    SQLiteDatabase presetWorkoutsDB;
+    SQLiteDatabase mRoutinesDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,11 +136,11 @@ public class WorkoutActivity extends AppCompatActivity {
             List<String> workoutList = new ArrayList<>();
 
             // open database to work with
-            presetWorkoutsDB = this.openOrCreateDatabase("Workouts", MODE_PRIVATE, null);
+            mRoutinesDB = this.openOrCreateDatabase("Routines", MODE_PRIVATE, null);
 
             // query for preset_workout_names
-            Cursor c = presetWorkoutsDB.rawQuery("SELECT preset_workout_name FROM preset_workouts", null);
-            int presetWorkoutNameIndex = c.getColumnIndex("preset_workout_name");
+            Cursor c = mRoutinesDB.rawQuery("SELECT routine_name FROM routines", null);
+            int presetWorkoutNameIndex = c.getColumnIndex("routine_name");
             c.moveToFirst();
 
             // check if there is data returned in query
