@@ -8,12 +8,14 @@
     tools:context=".PresetExerciseListActivity">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/presetExerciseRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addExerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:onClick="addPresetExercise"
+        android:text="Add New Exercise" />
 </LinearLayout>

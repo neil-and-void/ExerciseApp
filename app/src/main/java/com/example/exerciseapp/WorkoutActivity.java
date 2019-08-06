@@ -114,6 +114,7 @@ public class WorkoutActivity extends AppCompatActivity {
         //todo: read from SQLite DB
         mAdapter = new ExerciseDataAdapter(exercises);
 
+
     }
 
     private void setupRecyclerView(){

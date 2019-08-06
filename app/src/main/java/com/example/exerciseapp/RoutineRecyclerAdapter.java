@@ -15,6 +15,10 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
     int mRecentlyDeletedRoutineId;
     int mRecentlyDeletedItemPosition;
 
+
+    /*
+     *
+     */
     public class RoutineViewHolder extends RecyclerView.ViewHolder{
         private TextView routineName;
         private TextView routineEdit;
@@ -24,20 +28,27 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
             routineName = view.findViewById(R.id.workoutNameTextView);
             routineEdit = view.findViewById(R.id.editWorkoutTextView);
         }
-
     }
 
-    // Constructor
+    /*
+     * Constructor
+     */
     public RoutineRecyclerAdapter(RoutineList routineList){
         mRoutineList = routineList;
     }
 
+    /*
+     *
+     */
     @Override
     public RoutineViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.workout_row_view,viewGroup,false);
         return new RoutineViewHolder(itemView);
     }
 
+    /*
+     *
+     */
     @Override
     public void onBindViewHolder(final RoutineViewHolder routineViewHolder, final int i) {
         // get routine name and ID and set them
@@ -56,15 +67,24 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
         });
     }
 
+    /*
+     *
+     */
     @Override
     public int getItemCount() {
         return mRoutineList.size();
     }
 
+    /*
+     *
+     */
     public void addRoutine(int routineId, String routineName){
         mRoutineList.addRoutine( routineId , routineName);
     }
 
+    /*
+     *
+     */
     public void deleteItem(int position){
         // save recently deleted data items
         mRecentlyDeletedRoutineName = mRoutineList.returnRoutineName(position);
@@ -76,15 +96,24 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
         notifyItemRemoved(position);
     }
 
+    /*
+     *
+     */
     public RoutineList getData(){
         return mRoutineList;
     }
 
+    /*
+     *
+     */
     public void restoreItem(int routineId, String routineName, int position){
         mRoutineList.addRoutine(routineId, routineName, position);
         notifyItemInserted(position);
     }
 
+    /*
+     *
+     */
     public String getItem(int position){
         return mRoutineList.returnRoutineName(position);
 
