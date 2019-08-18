@@ -33,7 +33,6 @@ public class WorkoutActivity extends AppCompatActivity {
 
         setupAlertDialog();
 
-        setExerciseDataAdapter();
         setupRecyclerView();
 
         // add exercise to workout
@@ -41,16 +40,27 @@ public class WorkoutActivity extends AppCompatActivity {
         addExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+                AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
 
-                // prompt to choose from a list of exercises for the given day
-                Exercise exercise = new Exercise();
-                exercise.setName("leg press");
-                exercise.setReps(45);
-                exercise.setExerciseSets(324);
-                mAdapter.addData(exercise);
-                mAdapter.notifyDataSetChanged();
+                builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
             }
         });
+
+
 
     }
 
@@ -91,35 +101,10 @@ public class WorkoutActivity extends AppCompatActivity {
         builder.show();
     }
 
-    // read data from DB
-    // place data into correct Exercise object attributes
-    // create Arraylist of Exercises
-    private void setExerciseDataAdapter(){
-
-        ArrayList<Exercise> exercises = new ArrayList<>();
-
-        Exercise e = new Exercise();
-        e.setName("Legs");
-        e.setExerciseSets(4);
-        e.setReps(10);
-
-        exercises.add(e);
-
-        e.setName("chest");
-        e.setExerciseSets(4);
-        e.setReps(8);
-
-        exercises.add(e);
-
-        //todo: read from SQLite DB
-        mAdapter = new ExerciseDataAdapter(exercises);
-
-
-    }
-
     private void setupRecyclerView(){
 
         // Instantiate RecyclerView and set adapter and layout manager
+        mAdapter = new ExerciseDataAdapter();
         RecyclerView recyclerView = findViewById(R.id.ExerciseRecyclerView);
         recyclerView.setAdapter(mAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));

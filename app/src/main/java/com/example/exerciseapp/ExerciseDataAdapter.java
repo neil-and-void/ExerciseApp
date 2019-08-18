@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExerciseDataAdapter extends RecyclerView.Adapter<ExerciseDataAdapter.ExerciseViewHolder> {
@@ -25,8 +26,8 @@ public class ExerciseDataAdapter extends RecyclerView.Adapter<ExerciseDataAdapte
     }
 
     // Constructor
-    public ExerciseDataAdapter(List<Exercise> ExerciseSet){
-        this.mExerciseSet = ExerciseSet;
+    public ExerciseDataAdapter(){
+        mExerciseSet = new ArrayList<>();
 
     }
 
