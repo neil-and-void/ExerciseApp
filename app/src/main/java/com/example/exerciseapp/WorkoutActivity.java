@@ -45,6 +45,7 @@ public class WorkoutActivity extends AppCompatActivity {
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // todo: add new
 
                     }
                 });
@@ -74,6 +75,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 //TODO: add workout to DB
                 Log.i("workout", "start " + mWorkoutName);
+                readPresetExercisesFromDB(1);
 
             }
         });
@@ -148,6 +150,22 @@ public class WorkoutActivity extends AppCompatActivity {
         }
 
         return null;
+    }
+
+    private void readPresetExercisesFromDB(int routineId){
+        // todo: read preset exercises from database and put into the list for the alert dialog
+        Cursor cursor = mRoutinesDB.rawQuery("SELECT * FROM preset_exercises WHERE routine_id = " + Integer.toString(routineId), null);
+
+        int exerciseNameIndex = cursor.getColumnIndex("preset_exercise_name");
+        int exerciseIdIndex = cursor.getColumnIndex("preset_exercise_id");
+
+        cursor.moveToFirst();
+
+        if (cursor != null) {
+            do {
+                Log.i("exercise database read", cursor.getString(exerciseNameIndex) + " " + Integer.toString(cursor.getInt(exerciseIdIndex)));
+            } while (cursor.moveToNext());
+        }
     }
     
 }

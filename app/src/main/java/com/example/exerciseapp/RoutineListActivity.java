@@ -172,7 +172,7 @@ public class RoutineListActivity extends AppCompatActivity {
 
             // create preset_workouts table and preset_exercises table
             mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS routines (routine_id INTEGER PRIMARY KEY, routine_name VARCHAR)");
-            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS preset_exercises (preset_exercise_id INTEGER PRIMARY KEY, preset_exercise_name VARCHAR, routine_id INTEGER PRIMARY KEY, FOREIGN KEY(routine_id) REFERENCES routines(routine_id) ON DELETE CASCADE )");
+            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS preset_exercises (preset_exercise_id INTEGER PRIMARY KEY, preset_exercise_name VARCHAR, routine_id INTEGER, FOREIGN KEY(routine_id) REFERENCES routines(routine_id) ON DELETE CASCADE )");
 
             // allow for cascading on delete
             mRoutinesDB.setForeignKeyConstraintsEnabled(true);

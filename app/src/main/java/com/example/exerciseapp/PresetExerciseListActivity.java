@@ -144,8 +144,9 @@ public class PresetExerciseListActivity extends AppCompatActivity {
                 final int position = viewHolder.getAdapterPosition();
                 final String presetExerciseName = mPresetExerciseRecyclerAdapter.getData().returnRoutineName(position);
                 final int presetExerciseId = mPresetExerciseRecyclerAdapter.getData().returnRoutineId(position);
+                Log.i("asd;lfjk", Integer.toString(presetExerciseId));
                 mPresetExerciseRecyclerAdapter.deleteItem(position);
-                mRoutinesDB.execSQL("DELETE FROM preset_exercises WHERE preset_exercise_id ='" + presetExerciseId + "'");
+                mRoutinesDB.execSQL("DELETE FROM preset_exercises WHERE preset_exercise_id = '" + presetExerciseId + "'");
 
                 Log.i("deleted item", presetExerciseName + Integer.toString(position));
 
