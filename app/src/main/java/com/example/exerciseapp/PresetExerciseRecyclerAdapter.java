@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetExerciseRecyclerAdapter.PresetExerciseViewHolder> {
 
-    private RoutineList mPresetExerciseList;
+    private IdNameTupleList mPresetExerciseList;
     String mRecentlyDeletedPresetExerciseName;
     int mRecentlyDeletedPresetExerciseId;
     int mRecentlyDeletedItemPosition;
@@ -31,7 +31,7 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
     /*
      * Constructor
      */
-    public PresetExerciseRecyclerAdapter(RoutineList presetExerciseList){mPresetExerciseList = presetExerciseList;}
+    public PresetExerciseRecyclerAdapter(IdNameTupleList presetExerciseList){mPresetExerciseList = presetExerciseList;}
 
     /*
      * Attach layout file to view holder
@@ -44,13 +44,12 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
     }
 
     /*
-     * display item of the adapter to the view holder
+     * display item from the adapter to the view holder
      */
     @Override
     public void onBindViewHolder(@NonNull PresetExerciseViewHolder presetExerciseViewHolder, int i) {
         // set the text of the TextView in the view holder
-        presetExerciseViewHolder.routineName.setText(mPresetExerciseList.returnRoutineName(i));
-
+        presetExerciseViewHolder.routineName.setText(mPresetExerciseList.returnName(i));
     }
 
     /*
@@ -65,7 +64,7 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
      * add preset exercise
      */
     public void addPresetExercise(int presetExerciseId, String presetExerciseName){
-        mPresetExerciseList.addRoutine(presetExerciseId, presetExerciseName);
+        mPresetExerciseList.add(presetExerciseId, presetExerciseName);
     }
 
     /*
@@ -73,19 +72,19 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
      */
     public void deleteItem(int position){
         // save recently deleted data items
-        mRecentlyDeletedPresetExerciseName = mPresetExerciseList.returnRoutineName(position);
-        mRecentlyDeletedPresetExerciseId = mPresetExerciseList.returnRoutineId(position);
+        mRecentlyDeletedPresetExerciseName = mPresetExerciseList.returnName(position);
+        mRecentlyDeletedPresetExerciseId = mPresetExerciseList.returnId(position);
         mRecentlyDeletedItemPosition = position;
 
         // delete
-        mPresetExerciseList.removeRoutine(position);
+        mPresetExerciseList.remove(position);
         notifyItemRemoved(position);
     }
 
     /*
      * return list of names of preset exercises
      */
-    public RoutineList getData(){
+    public IdNameTupleList getData(){
         return mPresetExerciseList;
 
     }
@@ -94,7 +93,7 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
      * restores item to its prior position in the array
      */
     public void restoreItem(int presetExerciseId, String presetExerciseName, int position){
-        mPresetExerciseList.addRoutine(presetExerciseId, presetExerciseName, position);
+        mPresetExerciseList.add(presetExerciseId, presetExerciseName, position);
         notifyItemInserted(position);
 
     }
@@ -103,7 +102,7 @@ public class PresetExerciseRecyclerAdapter extends RecyclerView.Adapter<PresetEx
      * returns a specific preset exercise name at given position
      */
     public String getItem(int position){
-        return mPresetExerciseList.returnRoutineName(position);
+        return mPresetExerciseList.returnName(position);
 
     }
 

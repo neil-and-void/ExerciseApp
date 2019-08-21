@@ -10,14 +10,14 @@ import android.widget.TextView;
 
 
 public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecyclerAdapter.RoutineViewHolder> {
-    private RoutineList mRoutineList;
+    private IdNameTupleList mRoutineList;
     String mRecentlyDeletedRoutineName;
     int mRecentlyDeletedRoutineId;
     int mRecentlyDeletedItemPosition;
 
 
     /*
-     *
+     * view holder for custom recycler view item
      */
     public class RoutineViewHolder extends RecyclerView.ViewHolder{
         private TextView routineName;
@@ -30,15 +30,17 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
         }
     }
 
+
     /*
      * Constructor
      */
-    public RoutineRecyclerAdapter(RoutineList routineList){
+    public RoutineRecyclerAdapter(IdNameTupleList routineList){
         mRoutineList = routineList;
     }
 
+
     /*
-     *
+     * Attach layout file to view holder
      */
     @Override
     public RoutineViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -46,13 +48,14 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
         return new RoutineViewHolder(itemView);
     }
 
+
     /*
-     *
+     * display item from the adapter to the view holder
      */
     @Override
     public void onBindViewHolder(final RoutineViewHolder routineViewHolder, final int i) {
         // get routine name and ID and set them
-        routineViewHolder.routineName.setText(mRoutineList.returnRoutineName(i));
+        routineViewHolder.routineName.setText(mRoutineList.returnName(i));
 
         // get context of where the adapter will be active
         final Context context = routineViewHolder.routineEdit.getContext();
@@ -61,62 +64,63 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PresetExerciseListActivity.class);
-                intent.putExtra("routineId", mRoutineList.returnRoutineId(i));
+                intent.putExtra("routineId", mRoutineList.returnId(i));
                 context.startActivity(intent);
             }
         });
     }
 
+
     /*
-     *
+     * return size of IdNameTupleList
      */
     @Override
     public int getItemCount() {
         return mRoutineList.size();
     }
 
-    /*
-     *
-     */
-    public void addRoutine(int routineId, String routineName){
-        mRoutineList.addRoutine( routineId , routineName);
-    }
 
     /*
-     *
+     * add id-name object to the IdNameTupleList
+     */
+    public void addRoutine(int routineId, String routineName){ mRoutineList.add( routineId , routineName);}
+
+
+    /*
+     * temporarily save item and remove it
      */
     public void deleteItem(int position){
         // save recently deleted data items
-        mRecentlyDeletedRoutineName = mRoutineList.returnRoutineName(position);
-        mRecentlyDeletedRoutineId = mRoutineList.returnRoutineId(position);
+        mRecentlyDeletedRoutineName = mRoutineList.returnName(position);
+        mRecentlyDeletedRoutineId = mRoutineList.returnId(position);
         mRecentlyDeletedItemPosition = position;
 
         // delete the routine
-        mRoutineList.removeRoutine(position);
+        mRoutineList.remove(position);
         notifyItemRemoved(position);
     }
 
+
     /*
-     *
+     * return the adapter data list
      */
-    public RoutineList getData(){
+    public IdNameTupleList getData(){
         return mRoutineList;
     }
 
+
     /*
-     *
+     * add item back adapter data list
      */
     public void restoreItem(int routineId, String routineName, int position){
-        mRoutineList.addRoutine(routineId, routineName, position);
+        mRoutineList.add(routineId, routineName, position);
         notifyItemInserted(position);
     }
 
-    /*
-     *
-     */
-    public String getItem(int position){
-        return mRoutineList.returnRoutineName(position);
 
-    }
+    /*
+     * return item from position
+     */
+    public String getItem(int position){return mRoutineList.returnName(position);}
 
 }

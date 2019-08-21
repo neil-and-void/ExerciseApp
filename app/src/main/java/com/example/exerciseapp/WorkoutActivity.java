@@ -20,9 +20,9 @@ import java.util.List;
 
 public class WorkoutActivity extends AppCompatActivity {
 
-    String mWorkoutName;
+    private String mWorkoutName;
     private ExerciseDataAdapter mAdapter;
-    SQLiteDatabase mRoutinesDB;
+    private SQLiteDatabase mRoutinesDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +31,33 @@ public class WorkoutActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // prompt user to select the routine for the workout
         setupAlertDialog();
 
+        // prepare
         setupRecyclerView();
 
+        setupAddExerciseButton();
+
+
+
+    }
+
+
+    /*
+     * setup button to prompt user with what exercise to add
+     */
+    private void setupAddExerciseButton(){
         // add exercise to workout
         FloatingActionButton addExercise = findViewById(R.id.fab);
         addExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
+
+                // prompt user to add an exercise
                 AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
 
+                // set functionality of positive button
                 builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -49,6 +65,7 @@ public class WorkoutActivity extends AppCompatActivity {
                     }
                 });
 
+                // set functionality of negative button
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -59,11 +76,11 @@ public class WorkoutActivity extends AppCompatActivity {
                 builder.show();
             }
         });
-
-
-
     }
 
+    /*
+     *
+     */
     private void setupAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(WorkoutActivity.this);
 
@@ -101,6 +118,10 @@ public class WorkoutActivity extends AppCompatActivity {
         builder.show();
     }
 
+
+    /*
+     *
+     */
     private void setupRecyclerView(){
 
         // Instantiate RecyclerView and set adapter and layout manager
@@ -116,6 +137,10 @@ public class WorkoutActivity extends AppCompatActivity {
 
     }
 
+
+    /*
+     *
+     */
     private List<String> queryWorkouts(){
         try{
             // List to be returned

@@ -23,8 +23,8 @@ public class RoutineListActivity extends AppCompatActivity {
     private SQLiteDatabase mRoutinesDB;
     private RoutineRecyclerAdapter mRoutineRecyclerAdapter;
     private RecyclerView mRoutineRecyclerView;
-    private RoutineList mRoutineList;
-    private RoutineList mRecentlyDeletedPresetExercises;
+    private IdNameTupleList mRoutineList;
+    private IdNameTupleList mRecentlyDeletedPresetExercises;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +39,12 @@ public class RoutineListActivity extends AppCompatActivity {
         // take workouts in array list and populate recycler view with them
         populateRecyclerView();
 
-        //
         enableSwipeToDeleteAndUndo();
     }
 
+
     /*
-     *
      * function to allow button to add routines
-     *
      */
     public void addRoutine(View view){
         final EditText input = new EditText(this);
@@ -72,10 +70,7 @@ public class RoutineListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String inputRoutineName = input.getText().toString();
-
-
-                        // get rid of whitespace
-                        String nameWithRemovedSpaces =  inputRoutineName.replaceAll("\\s+","");
+                        String formattedString = inputRoutineName.replaceAll("\\s+", "");
 
                         // check length of workout name
                         if (inputRoutineName.length() > 0){
@@ -83,7 +78,7 @@ public class RoutineListActivity extends AppCompatActivity {
 
                             // check if the inputted workout has the same name as another workout
                             for (int i = 0; i < mRoutineRecyclerAdapter.getItemCount(); i++){
-                                if (inputRoutineName.equals(mRoutineRecyclerAdapter.getItem(i))){
+                                if (formattedString.equals(mRoutineRecyclerAdapter.getItem(i).replaceAll("\\s+", ""))){
                                     routineNameExistsAlready = true;
                                     break;
                                 }
@@ -103,6 +98,8 @@ public class RoutineListActivity extends AppCompatActivity {
                                 mRoutineRecyclerAdapter.addRoutine(c.getInt(idColIndex), inputRoutineName);
                                 mRoutineRecyclerAdapter.notifyDataSetChanged();
 
+                                c.close();
+
                                 //Dismiss once everything is OK.
                                 addRoutineDialog.dismiss();
                             } else {
@@ -120,12 +117,11 @@ public class RoutineListActivity extends AppCompatActivity {
         addRoutineDialog.show();
     }
 
+
     /*
-     *
-     *
-     *
+     * allow for swiping to delete and undo
      */
-    private void enableSwipeToDeleteAndUndo() { // todo: implement undo to also undo deletion of that routines preset exercises
+    private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
 
             // detect which item in RecyclerView was swiped
@@ -134,8 +130,8 @@ public class RoutineListActivity extends AppCompatActivity {
 
                 // save item in placeholders and delete them
                 final int position = viewHolder.getAdapterPosition();
-                final String routineName = mRoutineRecyclerAdapter.getData().returnRoutineName(position);
-                final int routineId = mRoutineRecyclerAdapter.getData().returnRoutineId(position);
+                final String routineName = mRoutineRecyclerAdapter.getData().returnName(position);
+                final int routineId = mRoutineRecyclerAdapter.getData().returnId(position);
                 mRecentlyDeletedPresetExercises = savePresetExercises(routineId);
                 temporarilyDeleteItem(routineId,position);
 
@@ -148,7 +144,7 @@ public class RoutineListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        // undo the delete
+                        // undo the deletion
                         restoreItem(routineId, routineName, position);
                         mRoutineRecyclerView.scrollToPosition(position);
                     }
@@ -163,16 +159,17 @@ public class RoutineListActivity extends AppCompatActivity {
         itemTouchhelper.attachToRecyclerView(mRoutineRecyclerView);
     }
 
+
     /*
      * prepares database for use and read workouts from database
      */
     private void prepareAndReadRoutinesFromDatabase() {
         try {
-            mRoutineList = new RoutineList();
+            mRoutineList = new IdNameTupleList();
 
             // create preset_workouts table and preset_exercises table
             mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS routines (routine_id INTEGER PRIMARY KEY, routine_name VARCHAR)");
-            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS preset_exercises (preset_exercise_id INTEGER PRIMARY KEY, preset_exercise_name VARCHAR, routine_id INTEGER PRIMARY KEY, FOREIGN KEY(routine_id) REFERENCES routines(routine_id) ON DELETE CASCADE )");
+            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS preset_exercises (preset_exercise_id INTEGER PRIMARY KEY AUTOINCREMENT, preset_exercise_name VARCHAR, routine_id INTEGER, FOREIGN KEY(routine_id) REFERENCES routines(routine_id) ON DELETE CASCADE )");
 
             // allow for cascading on delete
             mRoutinesDB.setForeignKeyConstraintsEnabled(true);
@@ -188,19 +185,20 @@ public class RoutineListActivity extends AppCompatActivity {
                 do {
 
                     // add to ArrayList that will hold routines and id's
-                    mRoutineList.addRoutine(cursor.getInt(routineIdIndex), cursor.getString(routineNameIndex));
+                    mRoutineList.add(cursor.getInt(routineIdIndex), cursor.getString(routineNameIndex));
 
                     Log.i("databasePresetWorkouts", Integer.toString(cursor.getInt(routineIdIndex)) + " " + cursor.getString(routineNameIndex));
 
                 } while (cursor.moveToNext());
             }
+            cursor.close();
 
             // general exception catcher
         } catch (Exception e){
             e.printStackTrace();
         }
-
     }
+
 
     /*
      * populate the recycler view with array of workouts
@@ -213,21 +211,16 @@ public class RoutineListActivity extends AppCompatActivity {
 
     }
 
+
     /*
-     * temporarily remove routine and its exercises from array and delete from database
+     * temporarily save exercises for deleted routine
      */
-    private void temporarilyDeleteItem(int routineId, int position){
-        // remove item from
-        mRoutineRecyclerAdapter.deleteItem(position);
-        mRoutinesDB.execSQL("DELETE FROM routines WHERE routine_id ='" + routineId + "'");
-    }
+    private IdNameTupleList savePresetExercises(int routineId){
 
-    private RoutineList savePresetExercises(int routineId){
-
-        RoutineList presetExerciseList = new RoutineList();
+        IdNameTupleList presetExerciseList = new IdNameTupleList();
 
         // save preset exercises
-        Cursor cursor = mRoutinesDB.rawQuery("SELECT * FROM preset_exercises WHERE routine_id = " + Integer.toString(routineId), null);
+        Cursor cursor = mRoutinesDB.rawQuery("SELECT * FROM preset_exercises WHERE routine_id = '" + Integer.toString(routineId) + "'", null);
         int presetExerciseNameIndex = cursor.getColumnIndex("preset_exercise_name");
         int presetExerciseIdIndex = cursor.getColumnIndex("preset_exercise_id");
 
@@ -235,17 +228,27 @@ public class RoutineListActivity extends AppCompatActivity {
 
         if (cursor.getCount() > 0 && cursor != null) {
             do{
-                presetExerciseList.addRoutine(cursor.getInt(presetExerciseIdIndex), cursor.getString(presetExerciseNameIndex));
+                presetExerciseList.add(cursor.getInt(presetExerciseIdIndex), cursor.getString(presetExerciseNameIndex));
             } while(cursor.moveToNext());
         }
 
-
+        cursor.close();
         return presetExerciseList;
     }
 
 
     /*
-     *
+     * temporarily remove routine and its exercises from array and delete from database
+     */
+    private void temporarilyDeleteItem(int routineId, int position){
+        // remove item from adapter and database
+        mRoutineRecyclerAdapter.deleteItem(position);
+        mRoutinesDB.execSQL("DELETE FROM routines WHERE routine_id ='" + routineId + "'");
+    }
+
+
+    /*
+     * restore an item that has been recently deleted
      */
     private void restoreItem(int routineId, String routineName, int position){
         mRoutineRecyclerAdapter.restoreItem(routineId, routineName, position);
@@ -253,11 +256,9 @@ public class RoutineListActivity extends AppCompatActivity {
 
         // read back into database the preset exercises
         for(int i = 0; i < mRecentlyDeletedPresetExercises.size(); i++){
-            Log.i("deleted exercises", mRecentlyDeletedPresetExercises.returnRoutineName(i));
-            mRoutinesDB.execSQL("INSERT INTO preset_exercises (preset_exercise_id, preset_exercise_name, routine_id) VALUES (" + mRecentlyDeletedPresetExercises.returnRoutineId(i) + ",'" + mRecentlyDeletedPresetExercises.returnRoutineName(i)  + "'," + routineId + ")");
+            Log.i("deleted exercises", mRecentlyDeletedPresetExercises.returnName(i));
+            mRoutinesDB.execSQL("INSERT INTO preset_exercises (preset_exercise_id, preset_exercise_name, routine_id) VALUES (" + mRecentlyDeletedPresetExercises.returnId(i) + ",'" + mRecentlyDeletedPresetExercises.returnName(i)  + "'," + routineId + ")");
         }
-
     }
-
 
 }
