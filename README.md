@@ -7,4 +7,5 @@ I created this app
 # Takeaways
 * dsaf
 
+# Screenshots
 ![alt text](https://github.com/neilZon/ExerciseApp/blob/master/ExerciseAppResources/main.PNG)
