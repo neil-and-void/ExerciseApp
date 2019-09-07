@@ -10,5 +10,4 @@ Created this app around my ideal workout journal app in terms of user interface 
 * Working with custom Views
 
 # Screenshots
-![alt text](https://github.com/neilZon/ExerciseApp/blob/master/ExerciseAppResources/main.PNG)
 ![alt text](https://github.com/neilZon/ExerciseApp/blob/master/ExerciseAppResources/workout.PNG)
