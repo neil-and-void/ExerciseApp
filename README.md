@@ -2,7 +2,7 @@
 An exercise app with an intuitive user interface with the addition of a feature that lowers rest time between sets at the gym.
 
 # Preface
-I created this app 
+I created this app as a way for me to 
 
 # Takeaways
 * dsaf
