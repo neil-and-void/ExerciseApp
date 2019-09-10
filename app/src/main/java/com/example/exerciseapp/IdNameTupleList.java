@@ -1,6 +1,7 @@
 package com.example.exerciseapp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // class that holds list of workout names
 // and list of ID's for accessing routines and exercises
@@ -15,6 +16,10 @@ public class IdNameTupleList {
     public IdNameTupleList(){
         mRoutineIds = new ArrayList<>();
         mRoutineNames = new ArrayList<>();
+    }
+
+    public ArrayList<String> getNameList(){
+        return mRoutineNames;
     }
 
     /*
@@ -39,8 +44,8 @@ public class IdNameTupleList {
      * add an id-name object to the list at a position
      */
     public void add(int Id, String Name, int position){
-        mRoutineIds.add(position, Id);
-        mRoutineNames.add(position, Name);
+        mRoutineIds.set(position, Id);
+        mRoutineNames.set(position, Name);
     }
 
     /*
@@ -56,6 +61,14 @@ public class IdNameTupleList {
      */
     public int size(){
         return mRoutineIds.size();
+    }
+
+    /*
+     *
+     */
+    public void clear(){
+        mRoutineIds.clear();
+        mRoutineNames.clear();
     }
 
 }

@@ -167,9 +167,15 @@ public class RoutineListActivity extends AppCompatActivity {
         try {
             mRoutineList = new IdNameTupleList();
 
-            // create preset_workouts table and preset_exercises table
+            // create routines table and preset_exercises table
             mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS routines (routine_id INTEGER PRIMARY KEY, routine_name VARCHAR)");
             mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS preset_exercises (preset_exercise_id INTEGER PRIMARY KEY AUTOINCREMENT, preset_exercise_name VARCHAR, routine_id INTEGER, FOREIGN KEY(routine_id) REFERENCES routines(routine_id) ON DELETE CASCADE )");
+
+            // create workout and exercises tables
+            mRoutinesDB.execSQL("Drop table workouts");
+            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS workouts (workout_id TEXT PRIMARY KEY, workout_name VARCHAR,date VARCHAR)");
+            mRoutinesDB.execSQL("CREATE TABLE IF NOT EXISTS exercises (exercise_id INTEGER PRIMARY KEY, exercise_name VARCHAR, reps INTEGER, weight INTEGER,  workout_id VARCHAR, FOREIGN KEY (workout_id) REFERENCES workouts (workout_id))");
+
 
             // allow for cascading on delete
             mRoutinesDB.setForeignKeyConstraintsEnabled(true);

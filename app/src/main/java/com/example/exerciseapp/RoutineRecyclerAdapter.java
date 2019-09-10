@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecyclerAdapter.RoutineViewHolder> {
     private IdNameTupleList mRoutineList;
-    String mRecentlyDeletedRoutineName;
-    int mRecentlyDeletedRoutineId;
-    int mRecentlyDeletedItemPosition;
+    private String mRecentlyDeletedRoutineName;
+    private int mRecentlyDeletedRoutineId;
+    private int mRecentlyDeletedItemPosition;
 
 
     /*
@@ -44,7 +44,7 @@ public class RoutineRecyclerAdapter extends RecyclerView.Adapter<RoutineRecycler
      */
     @Override
     public RoutineViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.workout_row_view,viewGroup,false);
+        View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.routine_row_view,viewGroup,false);
         return new RoutineViewHolder(itemView);
     }
 
