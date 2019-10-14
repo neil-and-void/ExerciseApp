@@ -131,6 +131,7 @@ public class ExerciseDataAdapter extends RecyclerView.Adapter<ExerciseDataAdapte
     // Constructor
     public ExerciseDataAdapter(ArrayList<Exercise> exerciseArrayList){
         mExerciseList = exerciseArrayList;
+        setHasStableIds(true);
 
     }
 
@@ -151,6 +152,10 @@ public class ExerciseDataAdapter extends RecyclerView.Adapter<ExerciseDataAdapte
 
 
     }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public int getItemCount() {
@@ -162,7 +167,11 @@ public class ExerciseDataAdapter extends RecyclerView.Adapter<ExerciseDataAdapte
      */
     public void addExercise(Exercise exercise){
         mExerciseList.add(exercise);
-        notifyDataSetChanged();
+        notifyItemInserted(mExerciseList.size()-1);
+    }
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
 
