@@ -180,8 +180,8 @@ public class WorkoutActivity extends AppCompatActivity {
         mExerciseRecyclerAdapter = new ExerciseDataAdapter(mExerciseList);
         mExerciseRecyclerView = findViewById(R.id.ExerciseRecyclerView);
         mExerciseRecyclerView.setAdapter(mExerciseRecyclerAdapter);
-        mExerciseRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mExerciseRecyclerView.setLayoutManager(linearLayoutManager);
     }
 
     /*
